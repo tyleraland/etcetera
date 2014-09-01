@@ -35,11 +35,12 @@ Roadmap
 
 *   Implement a Twitter feed, ironically using Google Drive SDK to pull IFTTT data
     *   Put data into sqlite database; don't duplicate data
-*    Copy the above and build a Fitbit feed (data also stored on Google Drive)
-*    Copy the above and build a Sleep feed (Sleep as Android data on Google Drive)
-*    Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
-*    Build Mint feed using mintapi (available via pip!)
-*    Build Rescuetime feed using their python api 
+*   Copy the above and build a Fitbit feed (data also stored on Google Drive)
+*   Copy the above and build a SMS feed (data on Google Drive a la IFTTT)
+*   Copy the above and build a Sleep feed (Sleep as Android data on Google Drive)
+*   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
+*   Build Mint feed using mintapi (available via pip!)
+*   Build Rescuetime feed using their python api 
 *   ...
 *   GPS data from my android phone
 *   ...
