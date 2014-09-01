@@ -5,20 +5,15 @@ Parses settings.conf and provides top-level script
 from ConfigParser import SafeConfigParser
 import httplib2
 import os
-import mimetypes
 
-from scripts.feeds.twitterfeed import twitter_fetch
-
-# This is also in bin/authenticate_ ...
-OAUTH_SCOPE = 'https://www.googleapis.com/auth/drive.file'
-REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
-# os.environ['REQUESTS_CA_BUNDLE']
-
-credfile = '.credfile'
+from scripts.feeds.twitter import twitter_fetch
 
 def main(argv):
-    conf = SafeConfigParser(allow_no_value=True)
-    conf.read('settings.conf')
-    # https://developers.google.com/drive/web/auth/web-client
-    
-    twitter_fetch(None)
+    settings = SafeConfigParser(allow_no_value=True)
+    settings.read('settings.conf')
+
+    conf = {section : dict(settings.items(section)) for section in settings.sections()}
+
+    twitter_fetch(dict((k,conf['Google Drive'][k]) for k in ['oauth_scope',
+                                                             'credentials',
+                                                             'client_secrets'])) 
