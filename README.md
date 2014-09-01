@@ -40,7 +40,6 @@ Roadmap
 *    Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
 *    Build Mint feed using mintapi (available via pip!)
 *    Build Rescuetime feed using their python api 
-
 *   ...
 *   GPS data from my android phone
 *   ...
