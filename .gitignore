@@ -1,3 +1,8 @@
 settings.conf
 *~
-.swp
+*.swp
+client_secrets.json
+*-env/
+*.pyc
+src/
+.credfile

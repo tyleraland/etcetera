@@ -9,8 +9,10 @@ Setup
 * * $ ./bin/bootstrap.sh
 2 Activate the virtualenv.  All subsequent commands are run with the virtualenv activated
 * * $ source ghosteye-env/bin/activate
-2 Install the dependencies.  
+3 Install the dependencies.  
 * * $ pip install -r requirements.txt
+4 Authenticate Google Drive (This can't be automated)
+
 
 Roadmap
 =======
