@@ -6,7 +6,7 @@ Goal: Collect data from multiple channels and aggregate into a database
 Setup
 =======
 1. Create a virtualenv.
-        $ ./bin/bootstrap.sh
+    $ ./bin/bootstrap.sh
 2. Activate the virtualenv.  All subsequent commands are run with the virtualenv activated
         $ source ghosteye-env/bin/activate
 3. Install the dependencies.  
