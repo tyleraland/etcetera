@@ -1,8 +1,7 @@
-settings.conf
 *~
 *.swp
 client_secrets.json
 *-env/
 *.pyc
 src/
-.credfile
+.drive_credentials
