@@ -23,10 +23,10 @@ Setup
     $ pip install -r requirements.txt
     ```
 
-4. Authenticate Google Drive (This can't be automated)
+4. Authenticate Google Drive (This can't be automated).  This will give you a URL to paste into your browser and request a verification code.  If successful, the python script will download a .drive\_credentials file which the google drive API will use to access your account
 
     ```
-    $ ./bin/authenticate_google_drive.py
+    $ ./bin/authenticate_google\_drive.py
     ```
 
 
