@@ -41,9 +41,9 @@ Roadmap
 5. Build Mint feed using mintapi (available via pip!)
 6. Build Rescuetime feed using their python api 
 ...
-? GPS data from my android phone
-...
-Z A website to display visualizations (probably another project)
+*   GPS data from my android phone
+*   ...
+*   A website to display visualizations (probably another project)
 
 Inspiration
 =======
