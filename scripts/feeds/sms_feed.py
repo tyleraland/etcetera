@@ -39,7 +39,7 @@ def clean_row(row):
     last = datetimestring
     return("'" + datetimestring + "'," + "'" + text + "'")
                 
-def twitter_fetch(conf):
+def fetch_sms(conf):
     # https://developers.google.com/drive/web/auth/web-client
 
     storage = Storage(conf['credentials'])

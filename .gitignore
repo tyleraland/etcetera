@@ -1,8 +1,8 @@
 *~
 *.swp
-client_secrets.json
 *-env/
 *.pyc
 src/
 .drive_credentials
 *.db
+secrets/
