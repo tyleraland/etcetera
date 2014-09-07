@@ -21,4 +21,4 @@ def fetch_twitter(conf):
 
     # Returns list of last 20 twitter statuses
     timeline = api.GetUserTimeline()
-   return imap(clean_row, timeline):
+    return imap(clean_row, timeline)
