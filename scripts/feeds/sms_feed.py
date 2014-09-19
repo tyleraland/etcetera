@@ -1,17 +1,11 @@
 import httplib2
-import os
-import mimetypes
 import csv
 import calendar
+import itertools
 
 from apiclient.discovery import build
-from apiclient.http import MediaFileUpload
 from oauth2client.client import flow_from_clientsecrets
-from oauth2client.client import FlowExchangeError
-from apiclient import errors
 from oauth2client.file import Storage
-from datetime import datetime
-import itertools
 from datetime import datetime
 from pytz import timezone
 
@@ -23,33 +17,24 @@ def clean_row(row):
     contact_name = row[2]
     text = row[3]
     month = months[ls[0]] # E.g., 'September' -> '9'
-#    month = '0' + month if len(month) == 1 else month # '9' -> '09'
     day = int(ls[1])
     year = int(ls[2])
     hour = int(ls[4].split(':')[0]) # E.g. '1' from '1:23AM'
-#    hour = '0' + hour if len(hour) == 1 else hour
     minute = int(ls[4][-4:-2]) # E.g. '23' from '1:23AM'
     second = 0
-#    date = '-'.join([year, month, day])
-#    time = ':'.join([hour, minute, second])
     dt = datetime(year, month, day, hour, minute, second)
     dt = timezone('US/Pacific').localize(dt)
 
-    # timezone = 'PST'
-#    fields = ["'" + field + "'" for field in [date, time, timezone, number,
-#                                              contact_name, text]]
-    print(dt)
-    datetimestring = dt.strftime("%Y-%m-%d %H:%M:%S %Z%z")
-    print(datetimestring)
+    datestring = dt.strftime("%Y-%m-%d")
+    timestring = dt.strftime("%H:%M:%S")
+    timezonestring = dt.strftime("%Z%z")
 
-#    dt = datetime.datetime(int(year), int(month), int(day),
-#                           int(hour), int(minute), int(second))
-#    dt = timezone('UTC').localize(dt)
-#    print(dt)
-#    dt = dt.astimezone(timezone('US/Pacific'))
-#    print(dt)
-    return None
-#    return(','.join(fields))
+    return [str(field) for field in [datestring, 
+                                     timestring,
+                                     timezonestring,
+                                     number,
+                                     contact_name,
+                                     text]]
 
 def fetch_sms(conf):
     # https://developers.google.com/drive/web/auth/web-client
