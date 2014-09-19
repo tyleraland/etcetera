@@ -6,3 +6,4 @@ src/
 .drive_credentials
 *.db
 secrets/
+.DS_Store
