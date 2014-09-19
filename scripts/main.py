@@ -12,6 +12,14 @@ from datetime import datetime
 from scripts.feeds.sms_feed import fetch_sms
 from scripts.feeds.twitter_feed import fetch_twitter
 
+def dbinit(conf):
+    con = sqlite3.connect(conf['database'])
+    cur = con.cursor()
+
+    cur.execute("CREATE table if not exists Twitter(datetime TEXT unique, content TEXT)")
+
+    con.commit()
+
 def csv2sqlite(conf, rows):
     con = sqlite3.connect(conf['database'])
     cur = con.cursor()
@@ -42,7 +50,7 @@ def main(argv):
 
     #reader = twitter_fetch(dict(settings.items('Google Drive')))
     #csv2sqlite(dict(settings.items('Default')), reader)
-    #raw2csv(kind='twitter', data='/Users/tal/Downloads/tweets/data/js/tweets/2013_04.js')
 
-    settings.read(os.path.join('secrets','twitter_secrets.conf'))
-    fetch_twitter(dict(settings.items('Twitter')))
+    # Twitter
+    #settings.read(os.path.join('secrets','twitter_secrets.conf'))
+    #fetch_twitter(dict(settings.items('Twitter')))
