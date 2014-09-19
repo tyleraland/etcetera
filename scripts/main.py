@@ -15,20 +15,9 @@ from scripts.feeds.fitbit_feed import fetch_fitbit
 
 def csv2sqlite(conf, table, rows):
 
-    #### NOTE ####
-    # For SMS, this should send to sent and recv in different tables
-    
     con = sqlite3.connect(conf['database'])
     cur = con.cursor()
-    cur.execute("CREATE table if not exists Twitter(datetime TEXT unique, content TEXT)")
-    cur.execute("CREATE table if not exists sms(date TEXT,\
-                                                time TEXT,\
-                                                timezone TEXT,\
-                                                number TEXT,\
-                                                contact_name TEXT,\
-                                                message TEXT,\
-                                                UNIQUE(date, time, message)\
-                                                  on conflict replace);")
+
     con.text_factory = str
     for row in rows:
         # We want to use sqlite's facilities to build our statement string, but that

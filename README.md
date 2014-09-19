@@ -54,3 +54,5 @@ Brian Staats:
 Nicholas Felton 
 - http://bits.blogs.nytimes.com/2014/08/19/a-life-in-data-nicholas-feltons-self-surveillance/
 - http://theofficeof.feltron.com/
+Fitbit
+- http://www.jamierubin.net/2013/03/20/one-full-year-of-fitbit-pedometer-data-part-1-a-look-back/
