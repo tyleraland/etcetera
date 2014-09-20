@@ -48,16 +48,16 @@ def main(argv):
     settings = SafeConfigParser(allow_no_value=True)
     settings.read('settings.conf')
 
+    #### SMS #### 
+#    sms_feed = fetch_sms(dict(settings.items('Google Drive')))
+#    csv2sqlite(dict(settings.items('Default')), 'sms', sms_feed)
+
     #### Twitter ####
 #    settings.read(os.path.join('secrets','twitter_secrets.conf'))
 #    twitter_feed = fetch_twitter(dict(settings.items('Twitter')))
 #    csv2sqlite(dict(settings.items('Default')), 'Twitter', twitter_feed)
 
     #### Fitbit ####
-    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
-    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
-    csv2sqlite(dict(settings.items('Default')), 'Fitbit_intraday_steps', fitbit_feed)
-
-    #### SMS #### 
-#    sms_feed = fetch_sms(dict(settings.items('Google Drive')))
-#    csv2sqlite(dict(settings.items('Default')), 'sms', sms_feed)
+#    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
+#    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
+#    csv2sqlite(dict(settings.items('Default')), 'Fitbit_intraday_steps', fitbit_feed)
