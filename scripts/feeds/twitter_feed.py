@@ -2,16 +2,20 @@ import twitter
 import json
 import calendar
 from itertools import imap
+from datetime import datetime
+from pytz import timezone
 
 months = dict((month,num) for num,month in enumerate(calendar.month_abbr))
 
 def clean_row(status):
-    datetime = status.AsDict()['created_at'].split()
-    date = [datetime[-1], months[datetime[1]], datetime[2]]
-    date = '-'.join([str(date[0])] + ['0' + str(d) if len(str(d)) < 2 else str(d) for d in date[1:]])
-    time = datetime[3]
-    tz = datetime[-2]
-    return (date, time, tz, status.AsDict()['text'])
+    now = status.AsDict()['created_at'].split()
+    hms = [int(hms) for hms in now[3].split(':')]
+    dt = datetime(int(now[5]), int(months[now[1]]), int(now[2]),
+         hms[0], hms[1], hms[2], tzinfo=timezone('UTC'))
+    datetimestring = dt.strftime('%Y-%m-%d %H:%M:%S')
+    return([datetimestring, 
+            str(status.AsDict()['text'])
+           ])
 
 def fetch_twitter(conf):
     api = twitter.Api(consumer_key=conf['consumer_key'],
