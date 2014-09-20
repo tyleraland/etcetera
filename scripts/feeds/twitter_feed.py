@@ -11,7 +11,7 @@ def clean_row(status):
     now = status.AsDict()['created_at'].split()
     hms = [int(hms) for hms in now[3].split(':')]
     dt = datetime(int(now[5]), int(months[now[1]]), int(now[2]),
-         hms[0], hms[1], hms[2], tzinfo=timezone('UTC'))
+         hms[0], hms[1], hms[2])
     datetimestring = dt.strftime('%Y-%m-%d %H:%M:%S')
     return([datetimestring, 
             str(status.AsDict()['text'])

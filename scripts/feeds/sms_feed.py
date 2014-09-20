@@ -29,9 +29,7 @@ def clean_row(row):
     else:
         raise Exception("Must be AM or PM")
     second = 0
-    dt = datetime(year, month, day, hour, minute, second, tzinfo=timezone('UTC'))
-#    local_dt = datetime(year, month, day, hour, minute, second, tzinfo=timezone('US/Pacific'))
-#    dt = local_dt.astimezone(timezone('UTC'))
+    dt = datetime(year, month, day, hour, minute, second)
 
     datestring = dt.strftime("%Y-%m-%d")
     timestring = dt.strftime("%H:%M:%S")
