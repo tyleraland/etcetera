@@ -56,9 +56,9 @@ def main(argv):
     #twitter_feed = fetch_twitter(dict(settings.items('Twitter')))
 
     #### Fitbit ####
-    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
-    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
-    csv2sqlite(dict(settings.items('Default')), 'Fitbit_intraday_steps', fitbit_feed)
+#    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
+#    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
+#    csv2sqlite(dict(settings.items('Default')), 'Fitbit_intraday_steps', fitbit_feed)
 
     #### SMS #### 
 #    sms_recv_feed = fetch_sms(dict(settings.items('Google Drive')), kind='recv')
