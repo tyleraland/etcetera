@@ -12,26 +12,32 @@ from pytz import timezone
 months = dict((month,num) for num,month in enumerate(calendar.month_name))
 
 def clean_row(row):
-    ls = row[0].translate(None,',').split(' ')
-    number = row[1]
-    contact_name = row[2]
-    text = row[3]
+    direction = row[0]
+    ls = row[1].translate(None,',').split(' ')
+    number = row[2]
+    contact_name = row[3]
+    text = row[4]
     month = months[ls[0]] # E.g., 'September' -> '9'
     day = int(ls[1])
     year = int(ls[2])
     hour = int(ls[4].split(':')[0]) # E.g. '1' from '1:23AM'
     minute = int(ls[4][-4:-2]) # E.g. '23' from '1:23AM'
+    if ls[4][-2:] == 'AM' or hour == 12:
+        pass
+    elif ls[4][-2:] == 'PM':
+        hour += 12
+    else:
+        raise Exception("Must be AM or PM")
     second = 0
-    dt = datetime(year, month, day, hour, minute, second)
-    dt = timezone('US/Pacific').localize(dt)
+    dt = datetime(year, month, day, hour, minute, second, tzinfo=timezone('UTC'))
+#    local_dt = datetime(year, month, day, hour, minute, second, tzinfo=timezone('US/Pacific'))
+#    dt = local_dt.astimezone(timezone('UTC'))
 
     datestring = dt.strftime("%Y-%m-%d")
     timestring = dt.strftime("%H:%M:%S")
-    timezonestring = dt.strftime("%Z%z")
-
-    return [str(field) for field in [datestring, 
-                                     timestring,
-                                     timezonestring,
+    datetimestring = ' '.join([datestring,timestring])
+    return [str(field) for field in [datetimestring, 
+                                     direction,
                                      number,
                                      contact_name,
                                      text]]
@@ -48,35 +54,25 @@ def fetch_sms(conf):
     http = creds.authorize(http)
     drive_service = build('drive', 'v2', http=http)
     
-    results = []
 
-    # Received SMS messages
-    params = {'q': 'title="{}"'.format(conf['sms_received'])}
-    files = drive_service.files().list(**params).execute()
-    results.extend(files['items'])
+    readers = {}
+    for sms_type in ['sms_received','sms_sent']:
+        params = {'q': 'title="{}"'.format(conf[sms_type])}
+        files = drive_service.files().list(**params).execute()
+        results = []
+        results.extend(files['items'])
 
-    assert(1==len(results))
-    # Drive will kindly insert double-quotes if they are already present in a field
-    url = results[0]['exportLinks']['text/csv']
-    resp, content = drive_service._http.request(url)
-    if resp.status != 200:
-        print("An error occured: {}".format(resp))
-        return None
-    recv_reader = csv.reader(content.split('\n'), delimiter=',', quotechar='"')
+        # Gotcha: you deleted the spreadsheet, but didn't empty the trash
+        assert(1==len(results))
 
-    # Sent SMS messages
-    params = {'q': 'title="{}"'.format(conf['sms_sent'])}
-    files = drive_service.files().list(**params).execute()
-    results.extend(files['items'])
+        # Drive will kindly insert double-quotes if they are already present in a field
+        url = results[0]['exportLinks']['text/csv']
+        resp, content = drive_service._http.request(url)
+        if resp.status != 200:
+            print("An error occured: {}".format(resp))
+            return None
+        readers[sms_type] = csv.reader(content.split('\n'), delimiter=',', quotechar='"')
 
-    assert(2==len(results))
-    # Drive will kindly insert double-quotes if they are already present in a field
-    url = results[0]['exportLinks']['text/csv']
-    resp, content = drive_service._http.request(url)
-    if resp.status != 200:
-        print("An error occured: {}".format(resp))
-        return None
-    sent_reader = csv.reader(content.split('\n'), delimiter=',', quotechar='"')
-
-    return(itertools.chain(itertools.imap(clean_row, recv_reader),
-                           itertools.imap(clean_row, sent_reader)))
+    return(itertools.chain(
+                itertools.imap(clean_row, readers['sms_received']),
+                itertools.imap(clean_row, readers['sms_sent'])))

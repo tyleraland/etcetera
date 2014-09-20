@@ -61,10 +61,9 @@ def main(argv):
 #    csv2sqlite(dict(settings.items('Default')), 'Fitbit_intraday_steps', fitbit_feed)
 
     #### SMS #### 
-#    sms_recv_feed = fetch_sms(dict(settings.items('Google Drive')), kind='recv')
-#    sms_send_feed = fetch_sms(dict(settings.items('Google Drive')), kind='send')
-#    csv2sqlite(dict(settings.items('Default')), 'sms', sms_feed)
+    sms_feed = fetch_sms(dict(settings.items('Google Drive')))
+    csv2sqlite(dict(settings.items('Default')), 'sms', sms_feed)
+    #csv2sqlite(dict(settings.items('Default')), 'sms_send', sms_send_feed)
 
-#    for i in sms_feed:
-#        print(i)
-#        break
+    #sms_recv_feed = fetch_sms(dict(settings.items('Google Drive')), kind='recv')
+    #csv2sqlite(dict(settings.items('Default')), 'sms_recv', sms_recv_feed)

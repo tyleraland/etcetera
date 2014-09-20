@@ -1,31 +1,20 @@
 CREATE table if not exists 
-Twitter(datetime TEXT UNIQUE, 
-        timezone TEXT,
+Twitter(datetime TEXT,
         message TEXT,
-        UNIQUE(datetime,timezone,message)
+        UNIQUE(datetime, message)
       on conflict replace);
 
 CREATE table if not exists 
-sms_send(datetime TEXT, 
-         timezone TEXT, 
-         phone TEXT, 
-         contact_name TEXT, 
-         message TEXT, 
-         UNIQUE(datetime, timezone, message) 
-        on conflict replace);
-
-CREATE table if not exists 
-sms_recv(datetime TEXT, 
-         timezone TEXT, 
-         phone TEXT, 
-         contact_name TEXT, 
-         message TEXT, 
-         UNIQUE(datetime, timezone, message) 
-        on conflict replace);
+sms(datetime TEXT, 
+    direction TEXT,
+    phone TEXT, 
+    contact_name TEXT, 
+    message TEXT, 
+    UNIQUE(datetime, direction, message) 
+   on conflict replace);
 
 CREATE table if not exists 
 Fitbit_intraday_steps(datetime TEXT UNIQUE, 
-                      timezone TEXT, 
                       steps INTEGER, 
-                      UNIQUE(datetime, timezone) 
+                      UNIQUE(datetime) 
                     on conflict replace);
