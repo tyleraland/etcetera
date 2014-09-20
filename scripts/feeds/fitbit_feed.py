@@ -2,15 +2,23 @@
 
 import fitbit
 import IPython
-import pytz
+from pytz import timezone
 from datetime import datetime, timedelta
 from itertools import imap, chain, repeat
 
-def clean_row(date, timezone, row):
-    return([' '.join([date, row['time']]),
-            timezone, 
-            row['value']
-           ]) 
+def clean_row(date, tz, row):
+    yr,mo,dy = [int(ymd) for ymd in date.split('-')]
+    hr,mn,sc = [int(hms) for hms in row['time'].split(':')]
+
+    # Never create datetime with timezone by using tzinfo
+    # https://stackoverflow.com/questions/24856643/unexpected-results-converting-timezones-in-python
+    dt = datetime(yr,mo,dy,hr,mn,sc)
+    dt = tz.localize(dt)                # Insert timezone information into datetime object
+    dt = dt.astimezone(timezone('UTC')) # Convert to UTC
+    steps = int(row['value'])
+    datetimestring = dt.strftime('%Y-%m-%d %H:%M:%S')
+
+    return([datetimestring, steps])
 
 def fetch_day(fb, daystring):
     url = '{}/{}/user/{}/activities/steps/date/{}/1d.json'.format(fb.API_ENDPOINT,
@@ -18,9 +26,7 @@ def fetch_day(fb, daystring):
                                                               '-',
                                                               daystring)
     now = datetime.now()
-    tz = pytz.timezone(fb.user_profile_get()['user']['timezone'])
-    now = tz.localize(now)
-    timezone = now.strftime('%Z%z')
+    tz = timezone(fb.user_profile_get()['user']['timezone'])
 
     # Steps every 1 minute
     result = fb.make_request(url=url)
@@ -31,7 +37,7 @@ def fetch_day(fb, daystring):
     # Process every "row" in this day's dataset
     return(imap(clean_row,
                 repeat(date),
-                repeat(timezone),
+                repeat(tz),
                 result['activities-steps-intraday']['dataset']))
 
 def fetch_fitbit(conf):
