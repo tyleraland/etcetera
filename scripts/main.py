@@ -49,12 +49,9 @@ def main(argv):
     settings.read('settings.conf')
 
     #### Twitter ####
-    #csv2sqlite(dict(settings.items('Default')), reader)
-    #raw2csv(kind='twitter', data='/Users/tal/Downloads/tweets/data/js/tweets/2013_04.js')
-
-    settings.read(os.path.join('secrets','twitter_secrets.conf'))
-    twitter_feed = fetch_twitter(dict(settings.items('Twitter')))
-    csv2sqlite(dict(settings.items('Default')), 'Twitter', twitter_feed)
+#    settings.read(os.path.join('secrets','twitter_secrets.conf'))
+#    twitter_feed = fetch_twitter(dict(settings.items('Twitter')))
+#    csv2sqlite(dict(settings.items('Default')), 'Twitter', twitter_feed)
 
     #### Fitbit ####
 #    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
