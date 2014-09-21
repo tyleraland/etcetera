@@ -41,6 +41,7 @@ Roadmap
 *   Build Rescuetime feed using their python api 
 *   Build Mint feed using mintapi (available via pip!)
 *   Copy the above and build a Sleep feed (Sleep as Android data on Google Drive)
+*   Last.fm data
 *   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
 *   ...
 *   GPS data, scraped from Google API or from my android phone
