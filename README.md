@@ -36,7 +36,7 @@ Roadmap
 *   ~~Implement a Twitter feed using Twitter API~~
     *   Write a utility to insert Twitter archive (like from Twitter.com) into database
 *   ~~Fitbit feed using python-fitbit api~~
-*   *   ~~Request and receive Partner API access~~
+*   *    ~~Request and receive Partner API access~~
 *   ~~Build a SMS feed (data on Google Drive a la IFTTT)~~
 *   Copy the above and build a Sleep feed (Sleep as Android data on Google Drive)
 *   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
