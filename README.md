@@ -38,14 +38,17 @@ Roadmap
 *   ~~Fitbit feed using python-fitbit api~~
 *   *   ~~Request and receive Partner API access~~
 *   ~~Build a SMS feed (data on Google Drive a la IFTTT)~~
-*   GPS data, ideally from Google API or from my android phone
 *   Copy the above and build a Sleep feed (Sleep as Android data on Google Drive)
 *   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
 *   Build Mint feed using mintapi (available via pip!)
 *   Build Rescuetime feed using their python api 
 *   ...
+*   GPS data, scraped from Google API or from my android phone
+*   *   http://shkspr.mobi/blog/2014/04/extracting-your-own-location-information-from-google-the-hard-way/ suggests it's a PITA
+*   *   No Google API gives location history directly.  Maps gives your current location if you provide it hints
+*   *   Archive is available for download (JSON)
 *   ...
-*   A website to display visualizations (probably another project)
+*   A website to display visualizations (another project)
 
 Inspiration
 =======
