@@ -12,6 +12,7 @@ from datetime import datetime
 from scripts.feeds.sms_feed import fetch_sms
 from scripts.feeds.twitter_feed import fetch_twitter
 from scripts.feeds.fitbit_feed import fetch_fitbit
+from scripts.feeds.rescuetime_feed import fetch_rescuetime
 
 def csv2sqlite(conf, table, rows):
 
@@ -60,4 +61,9 @@ def main(argv):
     #### Fitbit ####
 #    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
 #    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
-#    csv2sqlite(dict(settings.items('Default')), 'Fitbit_intraday_steps', fitbit_feed)
+#    csv2sqlite(dict(settings.items('Default')), 'fitbit_intraday_steps', fitbit_feed)
+
+    ### RescueTime ###
+    settings.read(os.path.join('secrets','rescuetime_secrets.conf'))
+    rescuetime_feed = fetch_rescuetime(dict(settings.items('rescuetime')))
+    csv2sqlite(dict(settings.items('Default')), 'rescuetime', rescuetime_feed)

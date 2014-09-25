@@ -14,7 +14,13 @@ sms(datetime TEXT,
    on conflict replace);
 
 CREATE table if not exists 
-Fitbit_intraday_steps(datetime TEXT UNIQUE, 
+fitbit_intraday_steps(datetime TEXT UNIQUE, 
                       steps INTEGER, 
                       UNIQUE(datetime) 
                     on conflict replace);
+CREATE table if not exists
+rescuetime(datetime TEXT,
+           seconds_spent INTEGER,
+           activity TEXT,
+           category TEXT,
+           productivity_score INTEGER);
