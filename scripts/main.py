@@ -30,21 +30,6 @@ def csv2sqlite(conf, table, rows):
         cur.execute(statement, row)
     con.commit()
 
-def raw2csv(kind, data):
-    if kind == 'twitter':
-        js = open(data, 'r')
-        js.readline()     # Remove useless header
-        tweets = json.loads(js.read())
-        for tweet in tweets:
-            text = tweet['text'].lower()
-            time = tweet['created_at']
-            time = time.split()
-            time = time[0].split('-') + time[1].split(':')
-            time = [int(e) for e in time]
-            dt = datetime(*time)
-            print(text, time)
-            break
-            
 def main(argv):
     settings = SafeConfigParser(allow_no_value=True)
     settings.read('settings.conf')
@@ -54,16 +39,16 @@ def main(argv):
 #    csv2sqlite(dict(settings.items('Default')), 'sms', sms_feed)
 
     #### Twitter ####
-#    settings.read(os.path.join('secrets','twitter_secrets.conf'))
-#    twitter_feed = fetch_twitter(dict(settings.items('Twitter')))
-#    csv2sqlite(dict(settings.items('Default')), 'Twitter', twitter_feed)
+    settings.read(os.path.join('secrets','twitter_secrets.conf'))
+    twitter_feed = fetch_twitter(dict(settings.items('Twitter')))
+    csv2sqlite(dict(settings.items('Default')), 'Twitter', twitter_feed)
 
     #### Fitbit ####
-#    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
-#    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
-#    csv2sqlite(dict(settings.items('Default')), 'fitbit_intraday_steps', fitbit_feed)
+    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
+    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
+    csv2sqlite(dict(settings.items('Default')), 'fitbit_intraday_steps', fitbit_feed)
 
     ### RescueTime ###
-    settings.read(os.path.join('secrets','rescuetime_secrets.conf'))
-    rescuetime_feed = fetch_rescuetime(dict(settings.items('rescuetime')))
-    csv2sqlite(dict(settings.items('Default')), 'rescuetime', rescuetime_feed)
+#    settings.read(os.path.join('secrets','rescuetime_secrets.conf'))
+#    rescuetime_feed = fetch_rescuetime(dict(settings.items('rescuetime')))
+#    csv2sqlite(dict(settings.items('Default')), 'rescuetime', rescuetime_feed)
