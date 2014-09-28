@@ -1,4 +1,4 @@
-ghosteye
+etcetera
 ========
 
 Goal: Collect data from multiple channels and aggregate into a database
@@ -14,7 +14,7 @@ Setup
 2. Activate the virtualenv.  All subsequent commands are run with the virtualenv activated
 
     ```
-    $ source ghosteye-env/bin/activate
+    $ source etcetera-env/bin/activate
     ```
 
 3. Install the dependencies.  
@@ -43,6 +43,8 @@ Roadmap
 *   Build Mint feed using mintapi (available via pip!)
 *   Last.fm data
 *   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
+*   Google Calendar data using API (https://developers.google.com/google-apps/calendar/)
+    *   This will also require some tidying up of my calendars so they reflect things I really do
 *   ...
 *   GPS data, scraped from Google API or from my android phone
     *   http://shkspr.mobi/blog/2014/04/extracting-your-own-location-information-from-google-the-hard-way/ suggests it's a PITA
