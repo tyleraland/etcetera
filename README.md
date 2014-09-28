@@ -46,10 +46,8 @@ Roadmap
 *   Google Calendar data using API (https://developers.google.com/google-apps/calendar/)
     *   This will also require some tidying up of my calendars so they reflect things I really do
 *   ...
-*   GPS data, scraped from Google API or from my android phone
-    *   http://shkspr.mobi/blog/2014/04/extracting-your-own-location-information-from-google-the-hard-way/ suggests it's a PITA
-    *   No Google API gives location history directly.  Maps gives your current location if you provide it hints
-    *   Archive is available for download (JSON)
+*   GPS data, logged with GPSLogger for android and backed up to Google Drive
+    *   KML or GPX format?
 *   ...
 *   A website to display visualizations (another project)
 
