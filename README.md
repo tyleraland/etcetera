@@ -43,11 +43,14 @@ Roadmap
 *   Build Mint feed using mintapi (available via pip!)
 *   Last.fm data
 *   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
+*   GPS data, logged with GPSLogger for android and backed up to Google Drive
+    *   KML or GPX format?
+*   Email archives / backups.
+*   Keystrokes
+*   Phone calls placed/received?
 *   Google Calendar data using API (https://developers.google.com/google-apps/calendar/)
     *   This will also require some tidying up of my calendars so they reflect things I really do
 *   ...
-*   GPS data, logged with GPSLogger for android and backed up to Google Drive
-    *   KML or GPX format?
 *   ...
 *   A website to display visualizations (another project)
 
@@ -60,3 +63,7 @@ Nicholas Felton
 - http://theofficeof.feltron.com/
 Fitbit
 - http://www.jamierubin.net/2013/03/20/one-full-year-of-fitbit-pedometer-data-part-1-a-look-back/
+Every day of my life
+- http://marcinignac.com/projects/everyday-of-my-life/
+The personal analytics of (Stephen Wolfram's) life
+- http://blog.stephenwolfram.com/2012/03/the-personal-analytics-of-my-life/
