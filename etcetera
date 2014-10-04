@@ -3,8 +3,69 @@
 activate_this = 'etcetera-env/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
+
+"""
+Parses settings.conf and provides top-level script
+"""
+import os
 import sys
-from scripts.main import main
+import argparse
+
+from ConfigParser import SafeConfigParser
+
+from scripts.db import dbcreate, dbinsert
+from scripts.sms_feed import fetch_sms
+from scripts.twitter_feed import fetch_twitter
+from scripts.fitbit_feed import fetch_fitbit
+from scripts.rescuetime_feed import fetch_rescuetime
+
+class config:
+    def __init__(self, settings):
+        self.settings = settings
+    def section(self, section):
+        return dict(self.settings.items(section) +
+                    self.settings.items('Default'))
+
+def get_args():
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class = argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--gps', action='store_true', default=False)
+    return parser.parse_args()
+
+def main():
+    args = get_args()
+    settings = SafeConfigParser(allow_no_value=True)
+    settings.read('settings.conf')
+    conf = config(settings)
+    #database = dict(settings.items('Default'))['database']
+    defaultconf = conf.section('Default')
+    database = defaultconf['database']
+    dbcreate(defaultconf)
+
+    ### GPS ###
+    if args.gps:
+        from scripts.gps_feed import fetch_gps
+        gps_feed = fetch_gps(conf.section('Google Drive'))
+        dbinsert(defaultconf, 'gps', gps_feed)
+    
+    #### SMS #### 
+#    sms_feed = fetch_sms(dict(settings.items('Google Drive')))
+#    csv2sqlite(dict(settings.items('Default')), 'sms', sms_feed)
+
+    #### Twitter ####
+#    settings.read(os.path.join('secrets','twitter_secrets.conf'))
+#    twitter_feed = fetch_twitter(dict(settings.items('Twitter')))
+#    csv2sqlite(dict(settings.items('Default')), 'Twitter', twitter_feed)
+
+    #### Fitbit ####
+#    settings.read(os.path.join('secrets','fitbit_secrets.conf'))
+#    fitbit_feed = fetch_fitbit(dict(settings.items('fitbit')))
+#    csv2sqlite(dict(settings.items('Default')), 'fitbit_intraday_steps', fitbit_feed)
+
+    ### RescueTime ###
+#    settings.read(os.path.join('secrets','rescuetime_secrets.conf'))
+#    rescuetime_feed = fetch_rescuetime(dict(settings.items('rescuetime')))
+#    csv2sqlite(dict(settings.items('Default')), 'rescuetime', rescuetime_feed)
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main())
