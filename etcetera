@@ -74,5 +74,6 @@ def main():
         rescuetime_feed = fetch_rescuetime(conf.section('rescuetime'))
         dbinsert(defaultconf, 'rescuetime', rescuetime_feed)
 
+
 if __name__ == '__main__':
     sys.exit(main())
