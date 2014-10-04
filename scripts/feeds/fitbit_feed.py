@@ -18,7 +18,7 @@ def clean_row(date, tz, row):
     steps = int(row['value'])
     datetimestring = dt.strftime('%Y-%m-%d %H:%M:%S')
 
-    return([datetimestring, steps])
+    return [datetimestring, steps]
 
 def fetch_day(fb, daystring):
     url = '{}/{}/user/{}/activities/steps/date/{}/1d.json'.format(fb.API_ENDPOINT,
