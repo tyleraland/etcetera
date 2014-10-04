@@ -4,3 +4,4 @@ fitbit
 pytz
 python-cjson
 git+https://github.com/tyleraland/rescuetime.git
+git+https://github.com/pegler/pytzwhere.git
