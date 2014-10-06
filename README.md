@@ -39,12 +39,12 @@ Roadmap
     *   ~~Request and receive Partner API access~~
 *   ~~Build a SMS feed (data on Google Drive a la IFTTT)~~
 *   ~~Build Rescuetime feed using their python api~~
+*   ~~GPS data, logged with GPSLogger for android and backed up to Google Drive~~
+*   Phone call (metadata) logs on Google Drive a la IFTTT
 *   Copy the above and build a Sleep feed (Sleep as Android data on Google Drive)
 *   Build Mint feed using mintapi (available via pip!)
 *   Last.fm data
 *   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
-*   GPS data, logged with GPSLogger for android and backed up to Google Drive
-    *   KML or GPX format?
 *   Email archives / backups.
 *   Keystrokes
 *   Phone calls placed/received?
