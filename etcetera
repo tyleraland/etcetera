@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-activate_this = 'etcetera-env/bin/activate_this.py'
+activate_this = '/Users/tal/sandbox/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
 """
@@ -32,11 +32,12 @@ def get_args():
     return parser.parse_args()
 
 def main():
+    working = os.path.dirname(__file__)
     args = get_args()
     settings = SafeConfigParser(allow_no_value=True)
-    settings.read('settings.conf')
+    #settings.read(os.path.join(working, 'settings.conf'))
+    settings.read('/Users/tal/Code/etcetera/settings.conf')
     conf = config(settings)
-    #database = dict(settings.items('Default'))['database']
     defaultconf = conf.section('Default')
     database = defaultconf['database']
     dbcreate(defaultconf)
@@ -56,24 +57,23 @@ def main():
     #### Twitter ####
     if args.twitter:
         from scripts.twitter_feed import fetch_twitter
-        settings.read(os.path.join('secrets','twitter_secrets.conf'))
+        settings.read(os.path.join(working, 'secrets','twitter_secrets.conf'))
         twitter_feed = fetch_twitter(conf.section('Twitter'))
         dbinsert(defaultconf, 'Twitter', twitter_feed)
 
     #### Fitbit ####
     if args.fitbit:
         from scripts.fitbit_feed import fetch_fitbit
-        settings.read(os.path.join('secrets','fitbit_secrets.conf'))
+        settings.read(os.path.join(working, 'secrets','fitbit_secrets.conf'))
         fitbit_feed = fetch_fitbit(conf.section('fitbit'))
         dbinsert(defaultconf, 'fitbit_intraday_steps', fitbit_feed)
 
     ### RescueTime ###
     if args.rescuetime:
         from scripts.rescuetime_feed import fetch_rescuetime
-        settings.read(os.path.join('secrets','rescuetime_secrets.conf'))
+        settings.read(os.path.join(working, 'secrets','rescuetime_secrets.conf'))
         rescuetime_feed = fetch_rescuetime(conf.section('rescuetime'))
         dbinsert(defaultconf, 'rescuetime', rescuetime_feed)
-
 
 if __name__ == '__main__':
     sys.exit(main())
