@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-activate_this = '/home/pi/sandbox/bin/activate_this.py'
-execfile(activate_this, dict(__file__=activate_this))
-
 """
 Parses settings.conf and provides top-level script
 """
@@ -36,12 +33,19 @@ def main():
     args = get_args()
     settings = SafeConfigParser(allow_no_value=True)
     if args.settings:
+        working = os.path.dirname(args.settings)
         settings.read(args.settings)
     else:
         working = os.path.dirname(__file__)
         settings.read(os.path.join(working, 'settings.conf'))
+
+
     conf = config(settings)
     defaultconf = conf.section('Default')
+
+    activate_this = os.path.join(defaultconf['virtualenv'], 'bin', 'activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+
     database = defaultconf['database']
     dbcreate(defaultconf)
 
@@ -50,8 +54,8 @@ def main():
         from scripts.gps_feed import fetch_gps
         gps_feed = fetch_gps(conf.section('Google Drive'))
         dbinsert(defaultconf, 'gps', gps_feed)
-    
-    #### SMS #### 
+
+    #### SMS ####
     if args.sms:
         from scripts.sms_feed import fetch_sms
         sms_feed = fetch_sms(conf.section('Google Drive'))

@@ -34,7 +34,7 @@ def clean_row(row):
     datestring = dt.strftime("%Y-%m-%d")
     timestring = dt.strftime("%H:%M:%S")
     datetimestring = ' '.join([datestring,timestring])
-    return [str(field) for field in [datetimestring, 
+    return [str(field) for field in [datetimestring,
                                      direction,
                                      number,
                                      contact_name,
@@ -46,12 +46,12 @@ def fetch_sms(conf):
     storage = Storage(conf['credentials'])
     creds = storage.get()
     flow = flow_from_clientsecrets(conf['client_secrets'], conf['oauth_scope'])
-    
+
     #Create an httplib2.Http object and authorize it with our credentials
     http = httplib2.Http()
     http = creds.authorize(http)
     drive_service = build('drive', 'v2', http=http)
-    
+
 
     readers = {}
     for sms_type in ['sms_received','sms_sent']:

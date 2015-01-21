@@ -21,7 +21,10 @@ def delocalize_time(timestring, latitude, longitude):
     # Given: a lat, long coordinate and timestamp in its local time
     # Result: the time converted to UTC
     tzname = namer.tzNameAt(float(latitude), float(longitude))
-    tz = timezone(tzname)
+    try:
+        tz = timezone(tzname)
+    except AttributeError:
+        return None
     dt = datetime.strptime(timestring, "%Y-%m-%dT%H:%M:%SZ")
     dt = tz.localize(dt)
     dt = dt.astimezone(timezone('UTC'))
@@ -33,7 +36,7 @@ def fetch_gps(conf):
     storage = Storage(conf['credentials'])
     creds = storage.get()
     flow = flow_from_clientsecrets(conf['client_secrets'], conf['oauth_scope'])
-    
+
     #Create an httplib2.Http object and authorize it with our credentials
     http = httplib2.Http()
     http = creds.authorize(http)
@@ -62,11 +65,13 @@ def fetch_gps(conf):
             raise Exception("An error occured: {}".format(resp))
         xmls.append(content)
         doc = parseString(content)
-        for where,when in zip(doc.getElementsByTagName('gx:coord'), 
+        for where,when in zip(doc.getElementsByTagName('gx:coord'),
                               doc.getElementsByTagName('when')):
             coords = where.firstChild.data.split(' ')
             longitude = coords[0]
             latitude = coords[1]
             # Infer timezone from lat,long and convert local time to UTC
             datetimestring = delocalize_time(when.firstChild.data, latitude, longitude)
+            if not datetimestring:
+                continue
             yield [datetimestring, float(latitude), float(longitude)]
