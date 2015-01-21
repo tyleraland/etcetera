@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-activate_this = '/Users/tal/sandbox/bin/activate_this.py'
+activate_this = '/home/pi/sandbox/bin/activate_this.py'
 execfile(activate_this, dict(__file__=activate_this))
 
 """
@@ -24,6 +24,7 @@ class config:
 def get_args():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class = argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--settings')
     parser.add_argument('--gps', action='store_true', default=False)
     parser.add_argument('--sms', action='store_true', default=False)
     parser.add_argument('--twitter', action='store_true', default=False)
@@ -32,11 +33,13 @@ def get_args():
     return parser.parse_args()
 
 def main():
-    working = os.path.dirname(__file__)
     args = get_args()
     settings = SafeConfigParser(allow_no_value=True)
-    #settings.read(os.path.join(working, 'settings.conf'))
-    settings.read('/Users/tal/Code/etcetera/settings.conf')
+    if args.settings:
+        settings.read(args.settings)
+    else:
+        working = os.path.dirname(__file__)
+        settings.read(os.path.join(working, 'settings.conf'))
     conf = config(settings)
     defaultconf = conf.section('Default')
     database = defaultconf['database']
