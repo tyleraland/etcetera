@@ -7,11 +7,15 @@ import os
 import sys
 import argparse
 
+from os import path
 from ConfigParser import SafeConfigParser
 
 from scripts.db import dbcreate, dbinsert
 
 class config:
+    """
+    Class with method that returns the desired section AND default, as dictionary
+    """
     def __init__(self, settings):
         self.settings = settings
     def section(self, section):
@@ -21,7 +25,8 @@ class config:
 def get_args():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class = argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('--settings')
+    parser.add_argument('--settings',
+                        default=path.join(path.dirname(__file__), 'settings.conf'))
     parser.add_argument('--gps', action='store_true', default=False)
     parser.add_argument('--sms', action='store_true', default=False)
     parser.add_argument('--twitter', action='store_true', default=False)
@@ -32,13 +37,7 @@ def get_args():
 def main():
     args = get_args()
     settings = SafeConfigParser(allow_no_value=True)
-    if args.settings:
-        working = os.path.dirname(args.settings)
-        settings.read(args.settings)
-    else:
-        working = os.path.dirname(__file__)
-        settings.read(os.path.join(working, 'settings.conf'))
-
+    settings.read(args.settings)
 
     conf = config(settings)
     defaultconf = conf.section('Default')

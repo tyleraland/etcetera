@@ -11,7 +11,7 @@ def dbcreate(conf):
     tables = [
     """
     CREATE table if not exists
-    Twitter(datetime TEXT,
+    twitter(datetime TEXT,
             message TEXT,
             UNIQUE(datetime, message)
           on conflict replace);
