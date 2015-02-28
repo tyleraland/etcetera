@@ -45,6 +45,8 @@ def main():
     activate_this = os.path.join(defaultconf['virtualenv'], 'bin', 'activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
 
+    working = path.dirname(args.settings)
+
     database = defaultconf['database']
     dbcreate(defaultconf)
 
