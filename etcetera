@@ -54,11 +54,11 @@ def main():
     dbcreate(defaultconf)
 
     ### GPS ###
-#    if args.gps:
-#        from scripts.gps_feed import fetch_gps
-#        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
-#        gps_feed = fetch_gps(conf.section('dropbox'))
-##        dbinsert(defaultconf, 'gps', gps_feed)
+    if args.gps:
+        from scripts.gps_feed import fetch_gps
+        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
+        gps_feed = fetch_gps(conf.sections(['dropbox', 'gps']))
+        dbinsert(defaultconf, 'gps', gps_feed)
 
     #### SMS ####
     if args.sms:

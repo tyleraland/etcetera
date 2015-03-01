@@ -1,15 +1,13 @@
-import httplib2
 import csv
 import calendar
 import itertools
+import dropbox
 
-from apiclient.discovery import build
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.file import Storage
 from datetime import datetime,timedelta
 from pytz import timezone
 from itertools import chain,imap
 from tzwhere.tzwhere import tzwhere
+from os import path
 import time
 
 from xml.dom.minidom import parseString
@@ -31,38 +29,21 @@ def delocalize_time(timestring, latitude, longitude):
     time = dt.strftime('%Y-%m-%dT%H:%M:%S')
     return time
 def fetch_gps(conf):
-    # https://developers.google.com/drive/web/auth/web-client
-
-    storage = Storage(conf['credentials'])
-    creds = storage.get()
-    flow = flow_from_clientsecrets(conf['client_secrets'], conf['oauth_scope'])
-
-    #Create an httplib2.Http object and authorize it with our credentials
-    http = httplib2.Http()
-    http = creds.authorize(http)
-    drive_service = build('drive', 'v2', http=http)
-
-    params1 = {'q': 'title="{}"'.format(conf['gpslog_folder'])}
-    results = drive_service.files().list(**params1).execute()
-    assert(len(results['items']) == 1)
-    parent_folder_id = results['items'][0]['id']
-    params2 = {'q': "'{}' in parents".format(parent_folder_id)}
-    results = drive_service.files().list(**params2).execute()
-    
-    urls = dict([(f['title'],f['downloadUrl']) for f in results['items']])
+    client = dropbox.client.DropboxClient(conf['access_token'])
+    filepaths = [f['path'] for f in client.metadata(conf['gps'])['contents']]
 
     # Use datetime.now(), grab YYYYMMDD, use settings.conf dayspan to calculate interval
     # then check if any files in that interval are available for download
     now = datetime.now()
     wishlist = [(now - timedelta(days=i)).strftime('%Y%m%d') + '.kml'
                 for i in range(1,1+int(conf['day_span']))]
+    wishlist = [path.join(conf['gps'], w) for w in wishlist]
     xmls = []
     for name in wishlist:
-        if name not in urls:
+        if name not in filepaths:
             continue
-        resp, content = drive_service._http.request(urls[name])
-        if resp.status != 200:
-            raise Exception("An error occured: {}".format(resp))
+        handle = client.get_file(name)
+        content = handle.read()
         xmls.append(content)
         doc = parseString(content)
         for where,when in zip(doc.getElementsByTagName('gx:coord'),
