@@ -30,8 +30,6 @@ class config:
 def get_args():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class = argparse.RawDescriptionHelpFormatter)
-#    parser.add_argument('--settings',
-#                        default=path.join(path.dirname(__file__), 'settings.conf'))
     parser.add_argument('--venv')
     parser.add_argument('--gps', action='store_true')
     parser.add_argument('--sms', action='store_true')
@@ -52,10 +50,8 @@ def main():
 
     if args.venv:
         activate_this = os.path.join(args.venv, 'bin', 'activate_this.py')
-        #activate_this = os.path.join(defaultconf['virtualenv'], 'bin', 'activate_this.py')
         execfile(activate_this, dict(__file__=activate_this))
 
-#    working = path.dirname(args.settings)
     working = path.dirname(__file__)
 
     database = defaultconf['database']
