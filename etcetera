@@ -60,14 +60,14 @@ def main():
     ### GPS ###
     if args.gps:
         from scripts.gps_feed import fetch_gps
-        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
+        settings.read(os.path.join(working, defaultconf['secrets'],'dropbox_secrets.conf'))
         gps_feed = fetch_gps(conf.sections(['dropbox', 'gps']))
         dbinsert(defaultconf, 'gps', gps_feed)
 
     #### Calls ####
     if args.calls:
         from scripts.calls_feed import fetch_calls
-        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
+        settings.read(os.path.join(working, defaultconf['secrets'],'dropbox_secrets.conf'))
         calls_feed = fetch_calls('outgoing_calls', conf.sections(['dropbox', 'calls']))
         dbinsert(defaultconf, 'outgoing_calls', calls_feed)
         calls_feed = fetch_calls('received_calls', conf.sections(['dropbox', 'calls']))
@@ -78,14 +78,14 @@ def main():
     #### last.fm ####
     if args.last_fm:
         from scripts.last_fm_feed import fetch_last_fm
-        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
+        settings.read(os.path.join(working, defaultconf['secrets'],'dropbox_secrets.conf'))
         last_fm_feed = fetch_last_fm(conf.sections(['dropbox', 'last_fm']))
         dbinsert(defaultconf, 'last_fm', last_fm_feed)
 
     #### SMS ####
     if args.sms:
         from scripts.sms_feed import fetch_sms
-        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
+        settings.read(os.path.join(working, defaultconf['secrets'],'dropbox_secrets.conf'))
         sms_recv_feed = fetch_sms('sms_received', conf.sections(['dropbox', 'sms']))
         dbinsert(defaultconf, 'sms_received', sms_recv_feed)
         sms_sent_feed = fetch_sms('sms_sent', conf.sections(['dropbox', 'sms']))
@@ -94,21 +94,21 @@ def main():
     #### Twitter ####
     if args.twitter:
         from scripts.twitter_feed import fetch_twitter
-        settings.read(os.path.join(working, 'secrets','twitter_secrets.conf'))
+        settings.read(os.path.join(working, defaultconf['secrets'],'twitter_secrets.conf'))
         twitter_feed = fetch_twitter(conf.sections(['Twitter']))
         dbinsert(defaultconf, 'Twitter', twitter_feed)
 
     #### Fitbit ####
     if args.fitbit:
         from scripts.fitbit_feed import fetch_fitbit
-        settings.read(os.path.join(working, 'secrets','fitbit_secrets.conf'))
+        settings.read(os.path.join(working, defaultconf['secrets'],'fitbit_secrets.conf'))
         fitbit_feed = fetch_fitbit(conf.sections(['fitbit']))
         dbinsert(defaultconf, 'fitbit_intraday_steps', fitbit_feed)
 
     ### RescueTime ###
     if args.rescuetime:
         from scripts.rescuetime_feed import fetch_rescuetime
-        settings.read(os.path.join(working, 'secrets','rescuetime_secrets.conf'))
+        settings.read(os.path.join(working, defaultconf['secrets'],'rescuetime_secrets.conf'))
         rescuetime_feed = fetch_rescuetime(conf.sections(['rescuetime']))
         dbinsert(defaultconf, 'rescuetime', rescuetime_feed)
 
