@@ -1,6 +1,7 @@
 google-api-python-client
 python-twitter
 fitbit
+dropbox
 pytz
 python-cjson
 git+https://github.com/tyleraland/rescuetime.git
