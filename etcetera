@@ -14,7 +14,7 @@ from scripts.db import dbcreate, dbinsert
 
 class config:
     """
-    Class with method that returns the desired section AND default, as dictionary
+    Class with method that returns the desired sections AND default, as dictionary
     """
     def __init__(self, settings):
         self.settings = settings
@@ -30,11 +30,13 @@ def get_args():
                                      formatter_class = argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--settings',
                         default=path.join(path.dirname(__file__), 'settings.conf'))
-    parser.add_argument('--gps', action='store_true', default=False)
-    parser.add_argument('--sms', action='store_true', default=False)
-    parser.add_argument('--twitter', action='store_true', default=False)
-    parser.add_argument('--fitbit', action='store_true', default=False)
-    parser.add_argument('--rescuetime', action='store_true', default=False)
+    parser.add_argument('--gps', action='store_true')
+    parser.add_argument('--sms', action='store_true')
+    parser.add_argument('--twitter', action='store_true')
+    parser.add_argument('--fitbit', action='store_true')
+    parser.add_argument('--rescuetime', action='store_true')
+    parser.add_argument('--calls', action='store_true')
+    parser.add_argument('--last_fm', action='store_true')
     return parser.parse_args()
 
 def main():
@@ -59,6 +61,24 @@ def main():
         settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
         gps_feed = fetch_gps(conf.sections(['dropbox', 'gps']))
         dbinsert(defaultconf, 'gps', gps_feed)
+
+    #### Calls ####
+    if args.calls:
+        from scripts.calls_feed import fetch_calls
+        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
+        calls_feed = fetch_calls('outgoing_calls', conf.sections(['dropbox', 'calls']))
+        dbinsert(defaultconf, 'outgoing_calls', calls_feed)
+        calls_feed = fetch_calls('received_calls', conf.sections(['dropbox', 'calls']))
+        dbinsert(defaultconf, 'received_calls', calls_feed)
+        calls_feed = fetch_calls('missed_calls', conf.sections(['dropbox', 'calls']))
+        dbinsert(defaultconf, 'missed_calls', calls_feed)
+
+    #### last.fm ####
+    if args.last_fm:
+        from scripts.last_fm_feed import fetch_last_fm
+        settings.read(os.path.join(working, 'secrets','dropbox_secrets.conf'))
+        last_fm_feed = fetch_last_fm(conf.sections(['dropbox', 'last_fm']))
+        dbinsert(defaultconf, 'last_fm', last_fm_feed)
 
     #### SMS ####
     if args.sms:

@@ -19,19 +19,45 @@ def dbcreate(conf):
     """
     CREATE table if not exists
     sms_sent(datetime TEXT,
-        phone_number TEXT,
-        contact_name TEXT,
-        message TEXT,
-        UNIQUE(datetime, message)
+             phone_number TEXT,
+             contact_name TEXT,
+             message TEXT,
+             UNIQUE(datetime, message)
        on conflict replace);
     """,
     """
     CREATE table if not exists
     sms_received(datetime TEXT,
-        phone TEXT,
-        contact_name TEXT,
-        message TEXT,
-        UNIQUE(datetime, message)
+                 phone_number TEXT,
+                 contact_name TEXT,
+                 message TEXT,
+                 UNIQUE(datetime, message)
+       on conflict replace);
+    """,
+    """
+    CREATE table if not exists
+    outgoing_calls(datetime TEXT,
+                   phone_number TEXT,
+                   contact_name TEXT,
+                   duration_seconds INTEGER,
+                   UNIQUE(datetime)
+       on conflict replace);
+    """,
+    """
+    CREATE table if not exists
+    received_calls(datetime TEXT,
+                   phone_number TEXT,
+                   contact_name TEXT,
+                   duration_seconds INTEGER,
+                   UNIQUE(datetime)
+       on conflict replace);
+    """,
+    """
+    CREATE table if not exists
+    missed_calls(datetime TEXT,
+                 phone_number TEXT,
+                 contact_name TEXT,
+                 UNIQUE(datetime)
        on conflict replace);
     """,
     """
@@ -48,6 +74,14 @@ def dbcreate(conf):
                activity TEXT,
                category TEXT,
                productivity_score INTEGER);
+    """,
+    """
+    CREATE table if not exists
+    last_fm(datetime TEXT,
+            artist TEXT,
+            track TEXT,
+            album TEXT,
+            url TEXT);
     """,
     """
     CREATE table if not exists

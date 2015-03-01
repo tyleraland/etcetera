@@ -41,15 +41,14 @@ Roadmap
 *   ~~Build Rescuetime feed using their python api~~
 *   ~~GPS data, logged with GPSLogger for android and backed up to Google Drive~~
 *   Phone call (metadata) logs on Google Drive a la IFTTT
+*   Last.fm data
 *   Copy the above and build a Sleep feed (Sleep as Android data on Google Drive)
 *   Build Mint feed using mintapi (available via pip!)
-*   Last.fm data
 *   Build Evernote feed using Evernote SDK (sqlite max string size is 1GB)
 *   Email archives / backups.
-*   Keystrokes
-*   Phone calls placed/received?
 *   Google Calendar data using API (https://developers.google.com/google-apps/calendar/)
     *   This will also require some tidying up of my calendars so they reflect things I really do
+* Script to authenticate the various services
 *   ...
 *   ...
 *   A website to display visualizations (another project)
