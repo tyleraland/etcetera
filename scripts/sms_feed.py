@@ -1,22 +1,18 @@
-import httplib2
 import csv
 import calendar
 import itertools
+import dropbox
 
-from apiclient.discovery import build
-from oauth2client.client import flow_from_clientsecrets
-from oauth2client.file import Storage
 from datetime import datetime
 from pytz import timezone
 
 months = dict((month,num) for num,month in enumerate(calendar.month_name))
 
 def clean_row(row):
-    direction = row[0]
-    ls = row[1].translate(None,',').split(' ')
-    number = row[2]
-    contact_name = row[3]
-    text = row[4]
+    ls = row[0].translate(None,',').split(' ')
+    number = row[1]
+    contact_name = row[2]
+    text = row[3]
     month = months[ls[0]] # E.g., 'September' -> '9'
     day = int(ls[1])
     year = int(ls[2])
@@ -31,46 +27,28 @@ def clean_row(row):
     second = 0
     dt = datetime(year, month, day, hour, minute, second)
 
+    # Assuming that datetime is already in UTC
     datestring = dt.strftime("%Y-%m-%d")
     timestring = dt.strftime("%H:%M:%S")
     datetimestring = ' '.join([datestring,timestring])
     return [str(field) for field in [datetimestring,
-                                     direction,
                                      number,
                                      contact_name,
                                      text]]
 
-def fetch_sms(conf):
-    # https://developers.google.com/drive/web/auth/web-client
+def fetch_sms(sms_type, conf):
+    assert(sms_type in ['sms_received','sms_sent'])
 
-    storage = Storage(conf['credentials'])
-    creds = storage.get()
-    flow = flow_from_clientsecrets(conf['client_secrets'], conf['oauth_scope'])
+    client = dropbox.client.DropboxClient(conf['access_token'])
 
-    #Create an httplib2.Http object and authorize it with our credentials
-    http = httplib2.Http()
-    http = creds.authorize(http)
-    drive_service = build('drive', 'v2', http=http)
+    filepaths = [f['path'] for f in client.metadata(conf[sms_type])['contents']]
 
-
-    readers = {}
-    for sms_type in ['sms_received','sms_sent']:
-        params = {'q': 'title="{}"'.format(conf[sms_type])}
-        files = drive_service.files().list(**params).execute()
-        results = []
-        results.extend(files['items'])
-
-        # Gotcha: you deleted the spreadsheet, but didn't empty the trash
-        assert(1==len(results))
-
-        # Drive will kindly insert double-quotes if they are already present in a field
-        url = results[0]['exportLinks']['text/csv']
-        resp, content = drive_service._http.request(url)
-        if resp.status != 200:
-            print("An error occured: {}".format(resp))
-            return None
-        readers[sms_type] = csv.reader(content.split('\n'), delimiter=',', quotechar='"')
-
-    return(itertools.chain(
-                itertools.imap(clean_row, readers['sms_received']),
-                itertools.imap(clean_row, readers['sms_sent'])))
+    all_rows = []
+    # There may be multiple files in this direcotyr; max file size is 2MB
+    for filepath in filepaths:
+        handle = client.get_file(filepath)
+        content = handle.read()
+        rows = [row for row in csv.reader(content.split(' \n'), delimiter=',', quotechar='"')]
+        rows = [clean_row(row) for row in rows]
+        all_rows.extend(rows)
+    return(all_rows)
