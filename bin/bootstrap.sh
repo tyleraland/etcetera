@@ -5,14 +5,6 @@
 # Create a virtualenv and install requirements to it
 #
 # Specify a python interpreter using 'PYTHON=path/to/python boostrap.sh
-#
-## System dependencies [Try apt-get] ##
-# scons           (The pipeline's make engine)
-# g++             (c++ compiler)
-# cmake
-# libgsl0-dev     (GNU scientific library)
-# libncurses5-dev (For curses.h)
-##
 
 VENV_VERSION=1.11.6
 
