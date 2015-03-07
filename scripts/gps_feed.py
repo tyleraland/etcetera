@@ -36,7 +36,7 @@ def fetch_gps(conf):
     # then check if any files in that interval are available for download
     now = datetime.now()
     wishlist = [(now - timedelta(days=i)).strftime('%Y%m%d') + '.kml'
-                for i in range(1,1+int(conf['day_span']))]
+                for i in range(0,1+int(conf['day_span']))]
     wishlist = [path.join(conf['gps'], w) for w in wishlist]
     xmls = []
     for name in wishlist:

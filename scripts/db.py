@@ -3,10 +3,13 @@ import os
 from os import path
 
 def dbcreate(conf):
-    if not path.exists(path.dirname(conf['database'])):
+    dbpath = conf['database']
+    dbpath = dbpath.replace('~', os.environ['HOME'])
+
+    if not path.exists(path.dirname(dbpath)):
         os.makedirs(path.dirname(conf['database']))
 
-    con = sqlite3.connect(conf['database'])
+    con = sqlite3.connect(dbpath)
     cur = con.cursor()
     tables = [
     """
@@ -96,7 +99,10 @@ def dbcreate(conf):
 
 def dbinsert(conf, table, rows):
 
-    con = sqlite3.connect(conf['database'])
+    dbpath = conf['database']
+    dbpath = dbpath.replace('~', os.environ['HOME'])
+
+    con = sqlite3.connect(dbpath)
     cur = con.cursor()
 
     con.text_factory = str
