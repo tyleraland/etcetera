@@ -30,7 +30,7 @@ def fetch_day(fb, daystring):
 
     # Steps every 1 minute
     result = fb.make_request(url=url)
-    assert(len(result['activities-steps-intraday']['dataset']) == 1440 )
+    assert(len(result['activities-steps-intraday']['dataset']) <= 1440 )
     assert(result['activities-steps-intraday']['datasetType'] == 'minute')
     date = result['activities-steps'][0]['dateTime']
 
